@@ -239,11 +239,6 @@ void switch1()
                 domain2=inbuilt[i].removeFromDomain(domain2);
                 domain3=inbuilt[i].removeFromDomain(domain3);
                 domain4=inbuilt[i].removeFromDomain(domain4);
-                
-                /*for(iter=domain.begin();iter!=domain.end();iter++)
-                 {
-                 cout<<iter->first<<" "<<iter->second<<"\n";
-                 }*/
             }
             else
             {
@@ -256,7 +251,6 @@ void switch1()
             
             if(inbuilt[0].getBull()!=0 || inbuilt[0].getCow()!=0)   // Checking if there are any letters in STEP
             {
-                //cout<<"In E check ";
                 noOfGuesses++;
                 cout<<noOfGuesses<<". ";
                 inbuilt[5].display();
@@ -269,16 +263,9 @@ void switch1()
                     domain2=inbuilt[5].removeFromDomain(domain2);
                     domain3=inbuilt[5].removeFromDomain(domain3);
                     domain4=inbuilt[5].removeFromDomain(domain4);
-                    // call recursion ? Don't think so.
                 }
                 else                            // E is present
                 {
-                    //if(inbuilt[0].getBull() && inbuilt[0].getCow()==0 && cow==1)
-                    //secret.setLetter(2,'E');  // call recursion ?
-                    //else if(bull==1)
-                    //secret.setLetter(3,'E');  // call recursion ?
-                    //else // E either letter 1 or 2
-                    //secret.setLetter(0,'E'); or secret.setLetter(1,'E');
                     domain1['g'] = 0;
                     domain1['i'] = 0;
                     domain1['v'] = 0;
@@ -374,7 +361,7 @@ void switch1()
     }
     else
     {
-        cout<<" fuk u I ACCEPT DEFEAT!  "<<endl;
+        cout<<"I ACCEPT DEFEAT ! "<<endl;
     }
 }
 
