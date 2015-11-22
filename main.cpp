@@ -13,44 +13,44 @@ map<char,string> Second_letter_Frequency;
 map<char,string> Third_letter_Frequency;
 map<char,string> Fourth_letter_Frequency;
 
-void Initialize_Dictionary(); //Function to Initialize the words in the dictionary
-void Initialize_Frequency();  //Fuction to Initialize the frequencies of the alphabets
+void Initialize_Dictionary(); // Function to Initialize the words in the dictionary
+void Initialize_Frequency();  // Fuction to Initialize the frequencies of the alphabets
 void Arc_Consistency(string,int,int,int,int,int,map<char,int>,map<char,int>,map<char,int>,map<char,int>,class word []);
 char Choose_Alphabet(int,map<char,int>);
 map<char,int> Reduce_Domain(char,map<char,int>);
 int Reduce_Size(char,map<char,int>,int);
 
-int noOfGuesses=0; //Keeps Track of the number of Guesses
-int victory=0; //Used to Detect the end of game
-int E_3=0; //Used to check for e3
-int E_4=0; //Used to check for e4
+int noOfGuesses=0;  // Keeps Track of the number of Guesses
+int victory=0;      // Used to Detect the end of game
+int E_3=0;          // Used to check for e3
+int E_4=0;          // Used to check for e4
 
-//Base Class Initialization and Definition
+// Base Class Initialization and Definition
 class word {
-    string s; //
-    int bullCount,cowCount; //Keeps track of bullcount and cowcount
+    string s;
+    int bullCount,cowCount; // Keeps track of bullcount and cowcount
     
 public:
     
-    word() { bullCount = 0; cowCount = 0; } //Constructor
+    word() { bullCount = 0; cowCount = 0; } // Constructor
     
     inline void setLetter(int pos, char c) {   s[pos] = c;    }
     
-    inline void setBullCow(int b,int c)  {   bullCount = b; cowCount = c;  } //sets the overall bull and cow count
+    inline void setBullCow(int b,int c)  {   bullCount = b; cowCount = c;  }    // sets the overall bull and cow count
     
     inline int getBull()  {   return bullCount;   }
     
     inline int getCow()   {   return cowCount;    }
     
-    inline int checkNull() {   return bullCount+cowCount;    } //Checks if the bullcount + cowcount = 0
+    inline int checkNull() {   return bullCount+cowCount;    }                  // Checks if the bullcount + cowcount = 0
     
-    inline string getWord() {  return s; }  //Returns the word
+    inline string getWord() {  return s; }                                      // Returns the word
     
     void guessWord(int);
     
     void setWord();
     
-    inline char getLetter(int pos) { return s[pos]; } //Gives the letter corresponding to the position given
+    inline char getLetter(int pos) { return s[pos]; }                           // Gives the letter corresponding to the position given
     
     int compare(string);
     
@@ -75,15 +75,15 @@ void display2(string Secret_Word) {
 }
 
 
-//Class Fuction which assigns words to object inbuilt[]
+// Class Fuction which assigns words to object inbuilt[]
 void word::guessWord(int i) {
     string temp[6] = {"step","word","hymn","back","flux","give"};
     s = temp[i];
 }
 
-//Class Function
+// Class Function
 void word::setWord() {
-    map<string,int>::iterator iter; //Required to choose the random word from dictionary
+    map<string,int>::iterator iter;                                             // Required to choose the random word from dictionary
     srand(time(NULL));
     int randNumber = rand() % 2325;
     iter=Dictionary.begin();
@@ -94,7 +94,7 @@ void word::setWord() {
     s = iter->first;
 }
 
-//Class Function
+// Class Function
 int word::compare(string temp) {
     int bull=0,cow=0;
     int i,j;
@@ -120,7 +120,7 @@ int word::compare(string temp) {
     }
 }
 
-//Class Function
+// Class Function
 int word::checkWord() {
     int i,j,len;
     string temp;
@@ -168,10 +168,10 @@ int word::Check_with_Initial(string Secret_Word,class word inbuilt[]) {
 }
 
 void word::removeAllDomains(map<char, int> domain1, map<char, int> domain2, map<char, int> domain3, map<char, int> domain4) {
-     this->removeFromDomain(domain1);
-     this->removeFromDomain(domain2);
-     this->removeFromDomain(domain3);
-     this->removeFromDomain(domain4);
+    this->removeFromDomain(domain1);
+    this->removeFromDomain(domain2);
+    this->removeFromDomain(domain3);
+    this->removeFromDomain(domain4);
 }
 
 void setDomainAlphabetsToZeroGIV(map<char, int> &domain1, map<char, int> &domain2, map<char, int> &domain3, map<char, int> &domain4) {
@@ -211,15 +211,15 @@ void switch1() {
     word secret;
     word inbuilt[6];
     
-    map<char,int> domain1;      // Hash containing the Domain
+    map<char,int> domain1;              // Hash containing the Domain
     map<char,int> domain2;
     map<char,int> domain3;
     map<char,int> domain4;
     map<char,int>::iterator iter;
     
     int i;
-    int bullCheck=0,cowCheck=0; // Used to keep track of the overall bull and cow count
-    int bull,cow;               // SWITCH CASE 1, keep track of bull and cow count for each word
+    int bullCheck=0,cowCheck=0;         // Used to keep track of the overall bull and cow count
+    int bull,cow;                       // SWITCH CASE 1, keep track of bull and cow count for each word
     char temp;
     
     // Assign the initial six word to object inBuilt
@@ -237,7 +237,7 @@ void switch1() {
     
     // Word Guessing Starts
     for(i=0;i<6;i++) {
-        if(bullCheck+cowCheck!=4) { // consider case where words have J, Q, Z - total count may not add up to 4
+        if(bullCheck+cowCheck!=4) {     // consider case where words have J, Q, Z - total count may not add up to 4
             noOfGuesses++;
             cout<<noOfGuesses<<". ";
             inbuilt[i].display();
@@ -259,18 +259,18 @@ void switch1() {
                 cowCheck+=cow;
             }
         }
-        else {                      // bullCount + cowCount = 4
-            if(inbuilt[0].getBull()!=0 || inbuilt[0].getCow()!=0){   // Checking if there are any letters in STEP
+        else {                                                          // bullCount + cowCount = 4
+            if(inbuilt[0].getBull()!=0 || inbuilt[0].getCow()!=0){      // Checking if there are any letters in STEP
                 noOfGuesses++;
                 cout<<noOfGuesses<<". ";
                 inbuilt[5].display();
                 cout<<"  Enter number of bulls and cows ";
                 cin>>bull>>cow;
                 inbuilt[5].setBullCow(bull,cow);
-                if(inbuilt[5].checkNull()==0) {     // letters from GIVE not present
+                if(inbuilt[5].checkNull()==0) {                         // letters from GIVE not present
                     inbuilt[5].removeAllDomains(domain1, domain2, domain3, domain4);
                 }
-                else {                              // E is present
+                else {                                                  // E is present
                     setDomainAlphabetsToZeroGIV(domain1, domain2, domain3, domain4);
                 }
             }
@@ -288,13 +288,13 @@ void switch1() {
     }
     
     if(victory==1) {
-        return;
-    } //If word is already found return
-    //Pre-Processing => Arc consistency step using constraints
+        return;                                                         // If word is already found return
+    }
+    // Pre-Processing => Arc consistency step using constraints
     for(int k=0; k<6; k++) {
         Prune_Domains(domain1,domain2,domain3,domain4,inbuilt[k]);
     }
-    //Call Main recursion
+    // Call Main recursion
     string Secret_Word = "____";
     int Domain_Size1=0,Domain_Size2=0,Domain_Size3=0,Domain_Size4=0;
     for(iter=domain1.begin();iter!=domain1.end();iter++) {
@@ -353,8 +353,8 @@ int main() {
     int i;                      // ITERATOR
     int switchNumber;
     
-    Initialize_Dictionary();    //Initializing Dictionary
-    Initialize_Frequency();     //Initializing individual alphabet frequency
+    Initialize_Dictionary();    // Initializing Dictionary
+    Initialize_Frequency();     // Initializing individual alphabet frequency
     
     noOfGuesses = 0;
     cout<<"\n  Welcome! There are 2 game modes \n\n";
@@ -416,7 +416,7 @@ void Arc_Consistency(string Secret_Word,int Secret_word_Position,int Domain_Size
         }
     }
     else {
-        if((Dictionary[Secret_Word] == 1) && (inbuilt[0].Check_with_Initial(Secret_Word,inbuilt)) && (victory!=1)) { //inbuilt[0] => Dummy
+        if((Dictionary[Secret_Word] == 1) && (inbuilt[0].Check_with_Initial(Secret_Word,inbuilt)) && (victory!=1)) { // inbuilt[0] => Dummy
             if(noOfGuesses <= 7) {
                 int bull,cow;
                 noOfGuesses++;
@@ -425,9 +425,9 @@ void Arc_Consistency(string Secret_Word,int Secret_word_Position,int Domain_Size
                 cout<<"  Enter number of bulls and cows ";
                 cin>>bull>>cow;
                 if(bull==4) {
-                       cout<<"  The word has been found! \n";
-                       cout<<" ";
-                       victory=1;
+                    cout<<"  The word has been found! \n";
+                    cout<<" ";
+                    victory=1;
                 }
             }
             else {
@@ -486,7 +486,7 @@ int Reduce_Size(char alpha,map<char,int> Domain,int Domain_Size) {
     }
 }
 
-//Fucntion where arc consistency happens
+// Fucntion where arc consistency happens
 void Prune_Domains(map<char,int> &domain1,map<char,int> &domain2,map<char,int> &domain3,map<char,int> &domain4,class word obj) {
     int bull_count = 0,cow_count=0;
     string s = obj.getWord();
@@ -514,21 +514,21 @@ void Prune_Domains(map<char,int> &domain1,map<char,int> &domain2,map<char,int> &
             domain2 = Reduce_Domain(s[1],domain2);
             domain3 = Reduce_Domain(s[2],domain3);
             domain4 = Reduce_Domain(s[3],domain4);
-        } 	
+        }
     }
 }
 
-//Function to Initialize the words in the dictionary
+// Function to Initialize the words in the dictionary
 void Initialize_Dictionary() {
     string word;
     ifstream inFile("Dictionary.txt");
     while(getline(inFile,word)) {
-        Dictionary[word] = 1; 	
+        Dictionary[word] = 1;
     }
     inFile.close();
 }
 
-//Fuction to Initialize the frequencies of the alphabets
+// Fuction to Initialize the frequencies of the alphabets
 void Initialize_Frequency() {
     ifstream inFile_first("Frequency_one.txt");
     ifstream inFile_second("Frequency_two.txt");
@@ -543,6 +543,6 @@ void Initialize_Frequency() {
         First_letter_Frequency[i] = First_Frequency;
         Second_letter_Frequency[i] = Second_Frequency;
         Third_letter_Frequency[i] = Third_Frequency;
-        Fourth_letter_Frequency[i] = Fourth_Frequency;      
-    }  
+        Fourth_letter_Frequency[i] = Fourth_Frequency;
+    }
 }
