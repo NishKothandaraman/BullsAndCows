@@ -7,23 +7,27 @@
 
 using namespace std;
 
+// TODO : Wordle is a bit different from 5 letter bulls and cows because wordle tells which is the bull and which is the cow
+// TODO : That might make Wordle actually easier to solve?? Or is it still elimination? Think about it.
+// TODO : Well, if Wordle shows the letters then we can do a simple permutation of those letters itself without going through all the letters in the entire dictionary.
+// TODO : I think that might be the only change needed after all.
 map<string,int> Dictionary;
 map<char,string> First_letter_Frequency;
 map<char,string> Second_letter_Frequency;
 map<char,string> Third_letter_Frequency;
 map<char,string> Fourth_letter_Frequency;
+map<char,string> Fifth_letter_Frequency;
 
+// website to get all 5 letter words from: https://wordfind.com/length/5-letter-words/
 void Initialize_Dictionary(); // Function to Initialize the words in the dictionary
 void Initialize_Frequency();  // Fuction to Initialize the frequencies of the alphabets
-void Arc_Consistency(string,int,int,int,int,int,map<char,int>,map<char,int>,map<char,int>,map<char,int>,class word []);
+void Arc_Consistency(string,int,int,int,int,int,int,map<char,int>,map<char,int>,map<char,int>,map<char,int>,map<char,int>,class word []);
 char Choose_Alphabet(int,map<char,int>);
 map<char,int> Reduce_Domain(char,map<char,int>);
 int Reduce_Size(char,map<char,int>,int);
 
 int noOfGuesses=0;  // Keeps Track of the number of Guesses
 int victory=0;      // Used to Detect the end of game
-int E_3=0;          // Used to check for e3
-int E_4=0;          // Used to check for e4
 
 // Base Class Initialization and Definition
 class word {
@@ -60,24 +64,24 @@ public:
     
     void removeFromDomain(map<char,int> &domain) {
         int i;
-        for(i=0;i<4;i++) {
+        for(i=0;i<5;i++) {
             domain[tolower(s[i])]=0;
         }
     }
     
     void removeAllDomains(map<char, int>, map<char, int>, map<char, int>, map<char, int>);
     
-    inline void display() {   cout<<" "<<s[0]<<" "<<s[1]<<" "<<s[2]<<" "<<s[3];    }
+    inline void display() {   cout<<" "<<s[0]<<" "<<s[1]<<" "<<s[2]<<" "<<s[3]" "<<s[4];    }
 };
 
 void display2(string Secret_Word) {
-    cout<<" "<<Secret_Word[0]<<" "<<Secret_Word[1]<<" "<<Secret_Word[2]<<" "<<Secret_Word[3];
+    cout<<" "<<Secret_Word[0]<<" "<<Secret_Word[1]<<" "<<Secret_Word[2]<<" "<<Secret_Word[3]<<" "<<Secret_Word[4];
 }
 
 
 // Class Fuction which assigns words to object inbuilt[]
 void word::guessWord(int i) {
-    string temp[6] = {"step","word","hymn","back","flux","give"};
+    string temp[5] = {"crypt","blink","dwarf","mouse","vughs"};
     s = temp[i];
 }
 
@@ -98,8 +102,8 @@ void word::setWord() {
 int word::compare(string temp) {
     int bull=0,cow=0;
     int i,j;
-    for(i=0;i<4;i++) {
-        for(j=0;j<4;j++) {
+    for(i=0;i<5;i++) {
+        for(j=0;j<5;j++) {
             if((temp[i])==s[j]) {
                 if(i==j) {
                     bull++;
@@ -112,7 +116,7 @@ int word::compare(string temp) {
         }
     }
     cout<<"  Bulls = "<<bull<<" Cows = "<<cow<<"\n";
-    if(bull==4) {
+    if(bull==5) {
         return 1;
     }
     else {
@@ -128,13 +132,14 @@ int word::checkWord() {
         cout<<"  Enter the guess word ";
         cin>>temp;
         len=temp.length();
-        for(i=0;i<4;i++)
-            for(j=i+1;j<4;j++)
+        // TODO : Is this loop checking for repeating letters? 
+        for(i=0;i<5;i++)
+            for(j=i+1;j<5;j++)
                 if(temp[i]==temp[j]) {
-                    len=5;
+                    len=6;
                     break;
                 }
-    }while(len!=4);
+    }while(len!=5);
     int result=compare(temp);
     return result;
 }
@@ -142,10 +147,10 @@ int word::checkWord() {
 int word::Check_with_Initial(string Secret_Word,class word inbuilt[]) {
     int bull=0,cow=0;
     int i,j,count=0;
-    for(int k=0;k<6;k++) {
-        bull = 0; cow =0;
-        for(i=0;i<4;i++) {
-            for(j=0;j<4;j++) {
+    for(int k=0;k<5;k++) {
+        bull = 0; cow = 0;
+        for(i=0;i<5;i++) {
+            for(j=0;j<5;j++) {
                 if((Secret_Word[i])==(inbuilt[k].getLetter(j))) {
                     if(i==j) {
                         bull++;
@@ -157,24 +162,26 @@ int word::Check_with_Initial(string Secret_Word,class word inbuilt[]) {
                 }
             }
         }
+        // TODO : why this check?
         if((inbuilt[k].getBull() == bull) && (inbuilt[k].getCow() == cow)) {
             count++;
         }
     }
-    if(count == 6) {
+    if(count == 5) {
         return 1;
     }
     return 0;
 }
 
-void word::removeAllDomains(map<char, int> domain1, map<char, int> domain2, map<char, int> domain3, map<char, int> domain4) {
+void word::removeAllDomains(map<char, int> domain1, map<char, int> domain2, map<char, int> domain3, map<char, int> domain4, map<char, int> domain5) {
     this->removeFromDomain(domain1);
     this->removeFromDomain(domain2);
     this->removeFromDomain(domain3);
     this->removeFromDomain(domain4);
+    this->removeFromDomain(domain5);
 }
 
-void setDomainAlphabetsToZeroGIV(map<char, int> &domain1, map<char, int> &domain2, map<char, int> &domain3, map<char, int> &domain4) {
+void setDomainAlphabetsToZeroGIV(map<char, int> &domain1, map<char, int> &domain2, map<char, int> &domain3, map<char, int> &domain4, map<char, int> &domain5) {
     domain1['g'] = 0;
     domain1['i'] = 0;
     domain1['v'] = 0;
@@ -189,32 +196,42 @@ void setDomainAlphabetsToZeroGIV(map<char, int> &domain1, map<char, int> &domain
     domain4['v'] = 0;
 }
 
-void setDomainAlphabetsToZeroJQZ(map<char, int> &domain1, map<char, int> &domain2, map<char, int> &domain3, map<char, int> &domain4) {
+void setDomainAlphabetsToZeroJQXZ(map<char, int> &domain1, map<char, int> &domain2, map<char, int> &domain3, map<char, int> &domain4, map<char, int> &domain5) {
     domain1['j'] = 0;
     domain1['q'] = 0;
+    domain1['x'] = 0;
     domain1['z'] = 0;
     domain2['j'] = 0;
     domain2['q'] = 0;
+    domain2['x'] = 0;
     domain2['z'] = 0;
     domain3['j'] = 0;
     domain3['q'] = 0;
+    domain3['x'] = 0;
     domain3['z'] = 0;
     domain4['j'] = 0;
     domain4['q'] = 0;
+    domain4['x'] = 0;
     domain4['z'] = 0;
+    domain5['j'] = 0;
+    domain5['q'] = 0;
+    domain5['x'] = 0;
+    domain5['z'] = 0;
 }
 
 
 void Prune_Domains(map<char,int> &,map<char,int> &,map<char,int> &,map<char,int> &,class word);
 
+// Computer guessing
 void switch1() {
     word secret;
-    word inbuilt[6];
+    word inbuilt[5];
     
     map<char,int> domain1;              // Hash containing the Domain
     map<char,int> domain2;
     map<char,int> domain3;
     map<char,int> domain4;
+    map<char,int> domain5;
     map<char,int>::iterator iter;
     
     int i;
@@ -222,8 +239,8 @@ void switch1() {
     int bull,cow;                       // SWITCH CASE 1, keep track of bull and cow count for each word
     char temp;
     
-    // Assign the initial six word to object inBuilt
-    for(i=0;i<6;i++) {
+    // Assign the initial five default words to object inBuilt
+    for(i=0;i<5;i++) {
         inbuilt[i].guessWord(i);
     }
     
@@ -233,6 +250,7 @@ void switch1() {
         domain2[temp]=1;
         domain3[temp]=1;
         domain4[temp]=1;
+        domain5[temp]=1;
     }
     
     // Word Guessing Starts
@@ -263,19 +281,21 @@ void switch1() {
             if(inbuilt[0].getBull()!=0 || inbuilt[0].getCow()!=0){      // Checking if there are any letters in STEP
                 noOfGuesses++;
                 cout<<noOfGuesses<<". ";
-                inbuilt[5].display();
+                inbuilt[4].display();
                 cout<<"  Enter number of bulls and cows ";
                 cin>>bull>>cow;
-                inbuilt[5].setBullCow(bull,cow);
-                if(inbuilt[5].checkNull()==0) {                         // letters from GIVE not present
-                    inbuilt[5].removeAllDomains(domain1, domain2, domain3, domain4);
+                inbuilt[4].setBullCow(bull,cow);
+                if(inbuilt[4].checkNull()==0) {                         // letters from GIVE not present
+                    inbuilt[4].removeAllDomains(domain1, domain2, domain3, domain4);
                 }
                 else {                                                  // E is present
+                    // TODO : check this logic for letter 'S' with VUGHS. 
+                    // TODO later : this may not apply since letters can repeat here. Double check that.
                     setDomainAlphabetsToZeroGIV(domain1, domain2, domain3, domain4);
                 }
             }
             else {
-                inbuilt[5].removeAllDomains(domain1, domain2, domain3, domain4);
+                inbuilt[4].removeAllDomains(domain1, domain2, domain3, domain4);
             }
             for(int j=i;j<5;j++) {
                 if(inbuilt[j].checkNull()==0) {
@@ -292,11 +312,11 @@ void switch1() {
     }
     // Pre-Processing => Arc consistency step using constraints
     for(int k=0; k<6; k++) {
-        Prune_Domains(domain1,domain2,domain3,domain4,inbuilt[k]);
+        Prune_Domains(domain1,domain2,domain3,domain4,domain5,inbuilt[k]);
     }
     // Call Main recursion
-    string Secret_Word = "____";
-    int Domain_Size1=0,Domain_Size2=0,Domain_Size3=0,Domain_Size4=0;
+    string Secret_Word = "_____";
+    int Domain_Size1=0,Domain_Size2=0,Domain_Size3=0,Domain_Size4=0,Domain_Size5=0;
     for(iter=domain1.begin();iter!=domain1.end();iter++) {
         if(iter->second == 1) {
             Domain_Size1++;
@@ -317,8 +337,13 @@ void switch1() {
             Domain_Size4++;
         }
     }
+    for(iter=domain5.begin();iter!=domain5.end();iter++) {
+        if(iter->second == 1) {
+            Domain_Size5++;
+        }
+    }
     
-    Arc_Consistency(Secret_Word,0,Domain_Size1+1,Domain_Size2+1,Domain_Size3+1,Domain_Size4+1,domain1,domain2,domain3,domain4,inbuilt);
+    Arc_Consistency(Secret_Word,0,Domain_Size1+1,Domain_Size2+1,Domain_Size3+1,Domain_Size4+1,Domain_Size5+1,domain1,domain2,domain3,domain4,domain5,inbuilt);
     if(victory == 1) {
         return;
     }
@@ -327,6 +352,8 @@ void switch1() {
     }
 }
 
+// TODO : secondary
+// Player guessing
 void switch2() {
     word secret;
     secret.setWord();
@@ -334,7 +361,7 @@ void switch2() {
     int flag=0;
     
     do {
-        if(guessCount == 10) {
+        if(guessCount == 7) {
             cout<<"\n  You lost the game ";
             cout<<"\n  The word is";
             secret.display();
@@ -363,16 +390,18 @@ int main() {
     
     switch(switchNumber) {
         case 1:
-            cout<<"\n  Think of a 4 letter word \n\n";
-            cout<<"  The word should not have any repeating letters. \n\n";
-            cout<<"  _ _ _ _ \n\n";
+            cout<<"\n  Think of a 5 letter word \n\n";
+            // TODO : : : : 
+            cout<<"  The word should not have any repeating letters. (this will be changed later) \n\n";
+            cout<<"  _ _ _ _ _ \n\n";
             switch1();
             break;
             
         case 2:
-            cout<<"\n  The computer has thought of a 4 letter word \n";
-            cout<<"  It's your turn to guess it (in 10 turns) \n";
-            cout<<"  The guess word should not have any repeating letters. \n";
+            cout<<"\n  The computer has thought of a 5 letter word \n";
+            cout<<"  It's your turn to guess it (in 7 turns) \n";
+            // TODO : : : : 
+            cout<<"  The guess word should not have any repeating letters. (this will be changed later) \n";
             switch2();
             break;
             
@@ -382,7 +411,7 @@ int main() {
 }
 
 
-void Arc_Consistency(string Secret_Word,int Secret_word_Position,int Domain_Size1,int Domain_Size2,int Domain_Size3,int Domain_Size4,map<char,int> Domain1,map<char,int> Domain2,map<char,int> Domain3,map<char,int> Domain4,class word inbuilt[]) {
+void Arc_Consistency(string Secret_Word,int Secret_word_Position,int Domain_Size1,int Domain_Size2,int Domain_Size3,int Domain_Size4,map<char,int> Domain1,map<char,int> Domain2,map<char,int> Domain3,map<char,int> Domain4,map<char,int> Domain5,class word inbuilt[]) {
     if(Secret_word_Position < 4) {
         while((Domain_Size1!=0)&&(Domain_Size2!=0)&&(Domain_Size3!=0)&&(Domain_Size4!=0)) {
             if(Secret_word_Position == 0) {
@@ -416,7 +445,7 @@ void Arc_Consistency(string Secret_Word,int Secret_word_Position,int Domain_Size
         }
     }
     else {
-        if((Dictionary[Secret_Word] == 1) && (inbuilt[0].Check_with_Initial(Secret_Word,inbuilt)) && (victory!=1)) { // inbuilt[0] => Dummy
+        if((Dictionary[Secret_Word] == 1) && (inbuilt[0].Check_with_Initial(Secret_Word,inbuilt)) && (victory!=1)) {
             if(noOfGuesses <= 7) {
                 int bull,cow;
                 noOfGuesses++;
@@ -469,6 +498,9 @@ char Choose_Alphabet(int Secret_word_Position,map<char,int> Domain) {
     else if(Secret_word_Position == 3) {
         return Choose_Alphabet_Position(Fourth_letter_Frequency, Domain);
     }
+    else if(Secret_word_Position == 4) {
+        return Choose_Alphabet_Position(Fifth_letter_Frequency, Domain);
+    }
     return '\0';
 }
 
@@ -487,7 +519,7 @@ int Reduce_Size(char alpha,map<char,int> Domain,int Domain_Size) {
 }
 
 // Fucntion where arc consistency happens
-void Prune_Domains(map<char,int> &domain1,map<char,int> &domain2,map<char,int> &domain3,map<char,int> &domain4,class word obj) {
+void Prune_Domains(map<char,int> &domain1,map<char,int> &domain2,map<char,int> &domain3,map<char,int> &domain4,map<char,int> &domain5,class word obj) {
     int bull_count = 0,cow_count=0;
     string s = obj.getWord();
     if(obj.checkNull() != 0) {
@@ -507,6 +539,9 @@ void Prune_Domains(map<char,int> &domain1,map<char,int> &domain2,map<char,int> &
                 if(i != 3) {
                     domain4 = Reduce_Domain(s[i],domain4);
                 }
+                if(i != 4) {
+                    domain5 = Reduce_Domain(s[i],domain5);
+                }
             }
         }
         else if((bull_count==0) && (cow_count)) {
@@ -514,6 +549,7 @@ void Prune_Domains(map<char,int> &domain1,map<char,int> &domain2,map<char,int> &
             domain2 = Reduce_Domain(s[1],domain2);
             domain3 = Reduce_Domain(s[2],domain3);
             domain4 = Reduce_Domain(s[3],domain4);
+            domain4 = Reduce_Domain(s[4],domain5);
         }
     }
 }
@@ -534,15 +570,18 @@ void Initialize_Frequency() {
     ifstream inFile_second("Frequency_two.txt");
     ifstream inFile_third("Frequency_three.txt");
     ifstream inFile_fourth("Frequency_four.txt");
-    string First_Frequency,Second_Frequency,Third_Frequency,Fourth_Frequency;
+    ifstream inFile_fifth("Frequency_five.txt");
+    string First_Frequency,Second_Frequency,Third_Frequency,Fourth_Frequency,Fifth_Frequency;
     for(char i='a';i<='z';i++) {
         getline(inFile_first,First_Frequency);
         getline(inFile_second,Second_Frequency);
         getline(inFile_third,Third_Frequency);
         getline(inFile_fourth,Fourth_Frequency);
+        getline(inFile_fifth,Fifth_Frequency);
         First_letter_Frequency[i] = First_Frequency;
         Second_letter_Frequency[i] = Second_Frequency;
         Third_letter_Frequency[i] = Third_Frequency;
         Fourth_letter_Frequency[i] = Fourth_Frequency;
+        Fifth_letter_Frequency[i] = Fifth_Frequency;
     }
 }
