@@ -81,7 +81,7 @@ void display2(string Secret_Word) {
 
 // Class Fuction which assigns words to object inbuilt[]
 void word::guessWord(int i) {
-    string temp[5] = {"crypt","blink","dwarf","mouse","vughs"};
+    string temp[5] = {"crypt","fumed","blink","avows","ghazi"};
     s = temp[i];
 }
 
@@ -144,15 +144,15 @@ int word::checkWord() {
     return result;
 }
 
-int word::Check_with_Initial(string Secret_Word,class word inbuilt[]) {
+int word::Check_with_Initial(string Secret_Word, class word inbuilt[]) {
     int bull=0,cow=0;
     int i,j,count=0;
-    for(int k=0;k<5;k++) {
+    for(int k=0; k<5; k++) {
         bull = 0; cow = 0;
-        for(i=0;i<5;i++) {
-            for(j=0;j<5;j++) {
-                if((Secret_Word[i])==(inbuilt[k].getLetter(j))) {
-                    if(i==j) {
+        for(i=0; i<5; i++) {
+            for(j=0 ;j<5; j++) {
+                if((Secret_Word[i]) == (inbuilt[k].getLetter(j))) {
+                    if(i == j) {
                         bull++;
                     }
                     else {
@@ -181,42 +181,40 @@ void word::removeAllDomains(map<char, int> domain1, map<char, int> domain2, map<
     this->removeFromDomain(domain5);
 }
 
-void setDomainAlphabetsToZeroGIV(map<char, int> &domain1, map<char, int> &domain2, map<char, int> &domain3, map<char, int> &domain4, map<char, int> &domain5) {
+void setDomainAlphabetsToZeroGHZ(map<char, int> &domain1, map<char, int> &domain2, map<char, int> &domain3, map<char, int> &domain4, map<char, int> &domain5) {
     domain1['g'] = 0;
-    domain1['i'] = 0;
-    domain1['v'] = 0;
+    domain1['h'] = 0;
+    domain1['z'] = 0;
     domain2['g'] = 0;
-    domain2['i'] = 0;
-    domain2['v'] = 0;
+    domain2['h'] = 0;
+    domain2['z'] = 0;
     domain3['g'] = 0;
-    domain3['i'] = 0;
-    domain3['v'] = 0;
+    domain3['h'] = 0;
+    domain3['z'] = 0;
     domain4['g'] = 0;
-    domain4['i'] = 0;
-    domain4['v'] = 0;
+    domain4['h'] = 0;
+    domain4['z'] = 0;
+    domain5['g'] = 0;
+    domain5['h'] = 0;
+    domain5['z'] = 0;
 }
 
-void setDomainAlphabetsToZeroJQXZ(map<char, int> &domain1, map<char, int> &domain2, map<char, int> &domain3, map<char, int> &domain4, map<char, int> &domain5) {
+void setDomainAlphabetsToZeroJQX(map<char, int> &domain1, map<char, int> &domain2, map<char, int> &domain3, map<char, int> &domain4, map<char, int> &domain5) {
     domain1['j'] = 0;
     domain1['q'] = 0;
     domain1['x'] = 0;
-    domain1['z'] = 0;
     domain2['j'] = 0;
     domain2['q'] = 0;
     domain2['x'] = 0;
-    domain2['z'] = 0;
     domain3['j'] = 0;
     domain3['q'] = 0;
     domain3['x'] = 0;
-    domain3['z'] = 0;
     domain4['j'] = 0;
     domain4['q'] = 0;
     domain4['x'] = 0;
-    domain4['z'] = 0;
     domain5['j'] = 0;
     domain5['q'] = 0;
     domain5['x'] = 0;
-    domain5['z'] = 0;
 }
 
 
@@ -254,60 +252,60 @@ void switch1() {
     }
     
     // Word Guessing Starts
-    for(i=0;i<6;i++) {
-        if(bullCheck+cowCheck!=4) {     // consider case where words have J, Q, Z - total count may not add up to 4
+    for(i=0; i<5; i++) {
+        if(bullCheck + cowCheck != 5) {     // TODO : understand this logic. consider case where words have J, Q, X, Z - total count may not add up to 5
             noOfGuesses++;
             cout<<noOfGuesses<<". ";
             inbuilt[i].display();
             cout<<"  Enter number of bulls and cows ";
             cin>>bull>>cow;
-            inbuilt[i].setBullCow(bull,cow);
-            if(inbuilt[i].getBull()==4) {
+            inbuilt[i].setBullCow(bull, cow);
+            if(inbuilt[i].getBull() == 5) {
                 cout<<"  The word has been found! \n";
                 cout<<" ";
                 inbuilt[i].display();
-                victory=1;
+                victory = 1;
                 break;
             }
-            if(inbuilt[i].checkNull()==0) {
-                inbuilt[i].removeAllDomains(domain1, domain2, domain3, domain4);
+            if(inbuilt[i].checkNull() == 0) {
+                inbuilt[i].removeAllDomains(domain1, domain2, domain3, domain4, domain5);
             }
             else {
-                bullCheck+=bull;
-                cowCheck+=cow;
+                bullCheck += bull;
+                cowCheck += cow;
             }
         }
-        else {                                                          // bullCount + cowCount = 4
-            if(inbuilt[0].getBull()!=0 || inbuilt[0].getCow()!=0){      // Checking if there are any letters in STEP
+        else {                                                          // bullCount + cowCount = 5
+            if(inbuilt[2].getBull() != 0 || inbuilt[2].getCow() != 0 || inbuilt[3].getBull() != 0 || inbuilt[3].getCow() != 0){      // Checking if there are any letters in BLINK or AVOWS
                 noOfGuesses++;
                 cout<<noOfGuesses<<". ";
                 inbuilt[4].display();
                 cout<<"  Enter number of bulls and cows ";
                 cin>>bull>>cow;
                 inbuilt[4].setBullCow(bull,cow);
-                if(inbuilt[4].checkNull()==0) {                         // letters from GIVE not present
-                    inbuilt[4].removeAllDomains(domain1, domain2, domain3, domain4);
+                if(inbuilt[4].checkNull() == 0) {                         // letters from GHAZI not present
+                    inbuilt[4].removeAllDomains(domain1, domain2, domain3, domain4, domain5);
                 }
                 else {                                                  // E is present
-                    // TODO : check this logic for letter 'S' with VUGHS. 
+                    // TODO : check this logic for letters 'A' and 'I' with GHAZI??
                     // TODO later : this may not apply since letters can repeat here. Double check that.
-                    setDomainAlphabetsToZeroGIV(domain1, domain2, domain3, domain4);
+                    setDomainAlphabetsToZeroGHZ(domain1, domain2, domain3, domain4, domain5);
                 }
             }
             else {
-                inbuilt[4].removeAllDomains(domain1, domain2, domain3, domain4);
+                inbuilt[4].removeAllDomains(domain1, domain2, domain3, domain4, domain5);
             }
-            for(int j=i;j<5;j++) {
-                if(inbuilt[j].checkNull()==0) {
-                    inbuilt[j].removeAllDomains(domain1, domain2, domain3, domain4);
+            for(int j=i; j<5; j++) {
+                if(inbuilt[j].checkNull() == 0) {
+                    inbuilt[j].removeAllDomains(domain1, domain2, domain3, domain4, domain5);
                 }
             }
-            setDomainAlphabetsToZeroJQZ(domain1, domain2, domain3, domain4);
+            setDomainAlphabetsToZeroJQX(domain1, domain2, domain3, domain4, domain5);
             break;
         }
     }
     
-    if(victory==1) {
+    if(victory == 1) {
         return;                                                         // If word is already found return
     }
     // Pre-Processing => Arc consistency step using constraints
@@ -315,7 +313,7 @@ void switch1() {
         Prune_Domains(domain1,domain2,domain3,domain4,domain5,inbuilt[k]);
     }
     // Call Main recursion
-    string Secret_Word = "_____";
+    string Secret_Word = "______";
     int Domain_Size1=0,Domain_Size2=0,Domain_Size3=0,Domain_Size4=0,Domain_Size5=0;
     for(iter=domain1.begin();iter!=domain1.end();iter++) {
         if(iter->second == 1) {
@@ -411,36 +409,43 @@ int main() {
 }
 
 
-void Arc_Consistency(string Secret_Word,int Secret_word_Position,int Domain_Size1,int Domain_Size2,int Domain_Size3,int Domain_Size4,map<char,int> Domain1,map<char,int> Domain2,map<char,int> Domain3,map<char,int> Domain4,map<char,int> Domain5,class word inbuilt[]) {
-    if(Secret_word_Position < 4) {
-        while((Domain_Size1!=0)&&(Domain_Size2!=0)&&(Domain_Size3!=0)&&(Domain_Size4!=0)) {
+void Arc_Consistency(string Secret_Word,int Secret_word_Position,int Domain_Size1,int Domain_Size2,int Domain_Size3,int Domain_Size4,int Domain_Size5,map<char,int> Domain1,map<char,int> Domain2,map<char,int> Domain3,map<char,int> Domain4,map<char,int> Domain5,class word inbuilt[]) {
+    if(Secret_word_Position < 5) {
+        while((Domain_Size1!=0)&&(Domain_Size2!=0)&&(Domain_Size3!=0)&&(Domain_Size4!=0)&&(Domain_Size5!=0)) {
             if(Secret_word_Position == 0) {
                 char alpha = Choose_Alphabet(Secret_word_Position,Domain1);
                 Secret_Word[Secret_word_Position] = alpha;
                 Domain1 = Reduce_Domain(alpha,Domain1);
                 Domain_Size1--;
-                Arc_Consistency(Secret_Word,Secret_word_Position+1,Domain_Size1,Reduce_Size(alpha,Domain2,Domain_Size2),Reduce_Size(alpha,Domain3,Domain_Size3),Reduce_Size(alpha,Domain4,Domain_Size4),Domain1,Reduce_Domain(alpha,Domain2),Reduce_Domain(alpha,Domain3),Reduce_Domain(alpha,Domain4),inbuilt);
+                Arc_Consistency(Secret_Word,Secret_word_Position+1,Domain_Size1,Reduce_Size(alpha,Domain2,Domain_Size2),Reduce_Size(alpha,Domain3,Domain_Size3),Reduce_Size(alpha,Domain4,Domain_Size4),Reduce_Size(alpha,Domain5,Domain_Size5),Domain1,Reduce_Domain(alpha,Domain2),Reduce_Domain(alpha,Domain3),Reduce_Domain(alpha,Domain4),Reduce_Domain(alpha,Domain5),inbuilt);
             }
             else if(Secret_word_Position == 1) {
                 char alpha = Choose_Alphabet(Secret_word_Position,Domain2);
                 Secret_Word[Secret_word_Position] = alpha;
                 Domain2 = Reduce_Domain(alpha,Domain2);
                 Domain_Size2--;
-                Arc_Consistency(Secret_Word,Secret_word_Position+1,Domain_Size1,Domain_Size2,Reduce_Size(alpha,Domain3,Domain_Size3),Reduce_Size(alpha,Domain4,Domain_Size4),Domain1,Domain2,Reduce_Domain(alpha,Domain3),Reduce_Domain(alpha,Domain4),inbuilt);
+                Arc_Consistency(Secret_Word,Secret_word_Position+1,Domain_Size1,Domain_Size2,Reduce_Size(alpha,Domain3,Domain_Size3),Reduce_Size(alpha,Domain4,Domain_Size4),Reduce_Size(alpha,Domain5,Domain_Size5),Domain1,Domain2,Reduce_Domain(alpha,Domain3),Reduce_Domain(alpha,Domain4),Reduce_Domain(alpha,Domain5),inbuilt);
             }
             else if(Secret_word_Position == 2) {
                 char alpha = Choose_Alphabet(Secret_word_Position,Domain3);
                 Secret_Word[Secret_word_Position] = alpha;
                 Domain3 = Reduce_Domain(alpha,Domain3);
                 Domain_Size3--;
-                Arc_Consistency(Secret_Word,Secret_word_Position+1,Domain_Size1,Domain_Size2,Domain_Size3,Reduce_Size(alpha,Domain4,Domain_Size4),Domain1,Domain2,Domain3,Reduce_Domain(alpha,Domain4),inbuilt);
+                Arc_Consistency(Secret_Word,Secret_word_Position+1,Domain_Size1,Domain_Size2,Domain_Size3,Reduce_Size(alpha,Domain4,Domain_Size4),Reduce_Size(alpha,Domain5,Domain_Size5),Domain1,Domain2,Domain3,Reduce_Domain(alpha,Domain4),Reduce_Domain(alpha,Domain5),inbuilt);
             }
             else if(Secret_word_Position == 3) {
                 char alpha = Choose_Alphabet(Secret_word_Position,Domain4);
                 Secret_Word[Secret_word_Position] = alpha;
                 Domain4 = Reduce_Domain(alpha,Domain4);
                 Domain_Size4--;
-                Arc_Consistency(Secret_Word,Secret_word_Position+1,Domain_Size1,Domain_Size2,Domain_Size3,Domain_Size4,Domain1,Domain2,Domain3,Domain4,inbuilt);
+                Arc_Consistency(Secret_Word,Secret_word_Position+1,Domain_Size1,Domain_Size2,Domain_Size3,Domain_Size4,Reduce_Size(alpha,Domain5,Domain_Size5),Domain1,Domain2,Domain3,Domain4,Reduce_Domain(alpha,Domain5),inbuilt);
+            }
+            else if(Secret_word_Position == 4) {
+                char alpha = Choose_Alphabet(Secret_word_Position,Domain5);
+                Secret_Word[Secret_word_Position] = alpha;
+                Domain4 = Reduce_Domain(alpha,Domain5);
+                Domain_Size5--;
+                Arc_Consistency(Secret_Word,Secret_word_Position+1,Domain_Size1,Domain_Size2,Domain_Size3,Domain_Size4,Domain_Size5,Domain1,Domain2,Domain3,Domain4,Domain5,inbuilt);
             }
         }
     }
@@ -453,7 +458,7 @@ void Arc_Consistency(string Secret_Word,int Secret_word_Position,int Domain_Size
                 display2(Secret_Word);
                 cout<<"  Enter number of bulls and cows ";
                 cin>>bull>>cow;
-                if(bull==4) {
+                if(bull == 5) {
                     cout<<"  The word has been found! \n";
                     cout<<" ";
                     victory=1;
