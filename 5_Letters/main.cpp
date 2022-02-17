@@ -4,6 +4,7 @@
 #include<string>
 #include<cctype>
 #include<cstdlib>
+#include<time.h>
 
 using namespace std;
 
@@ -69,9 +70,9 @@ public:
         }
     }
     
-    void removeAllDomains(map<char, int>, map<char, int>, map<char, int>, map<char, int>);
+    void removeAllDomains(map<char, int>, map<char, int>, map<char, int>, map<char, int>, map<char, int>);
     
-    inline void display() {   cout<<" "<<s[0]<<" "<<s[1]<<" "<<s[2]<<" "<<s[3]" "<<s[4];    }
+    inline void display() {   cout<<" "<<s[0]<<" "<<s[1]<<" "<<s[2]<<" "<<s[3]<<" "<<s[4];    }
 };
 
 void display2(string Secret_Word) {
@@ -218,7 +219,7 @@ void setDomainAlphabetsToZeroJQX(map<char, int> &domain1, map<char, int> &domain
 }
 
 
-void Prune_Domains(map<char,int> &,map<char,int> &,map<char,int> &,map<char,int> &,class word);
+void Prune_Domains(map<char,int> &,map<char,int> &,map<char,int> &,map<char,int> &,map<char,int> &,class word);
 
 // Computer guessing
 void switch1() {
